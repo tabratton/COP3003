@@ -16,6 +16,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class JEightPuzzleFrame extends JFrame {
+  // Adjustment to width of window because of borders on buttons and space
+  // taken up by the window borders.
+  private static final int WIDTH_ADJUSTMENT = 20;
+  // Adjustment to height of window because of borders on buttons and space
+  // taken up by the window borders.
+  private static final int HEIGHT_ADJUSTMENT = 45;
   // The height of the full image used to create the puzzle.
   private int imageWidth;
   // The width of the full image used to create the puzzle.
@@ -41,13 +47,22 @@ public class JEightPuzzleFrame extends JFrame {
    * @param args Commandline arguments not used in this program
    */
   public static void main(String[] args) {
+    String imageName;
+
+    if (args.length != 0) {
+      imageName = args[1];
+      System.out.printf("Using given file: %s as source image.", imageName);
+    } else {
+      imageName = "FGCU_logo.png";
+      System.out.printf("No commandline arguments given, using default image:"
+          + " %s as source image.", imageName);
+    }
+
     JEightPuzzleFrame buttonFrame = new JEightPuzzleFrame("Eight Puzzle Game",
-        "FGCU_logo.png");
+        imageName);
     buttonFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    // The addition of 20 and 45 accounts for the sizes of the borders and
-    // window when using the setSize function
-    buttonFrame.setSize(buttonFrame.imageWidth + 20, buttonFrame.imageHeight
-        + 45);
+    buttonFrame.setSize(buttonFrame.imageWidth + WIDTH_ADJUSTMENT,
+        buttonFrame.imageHeight + HEIGHT_ADJUSTMENT);
     buttonFrame.setVisible(true);
   }
 
@@ -167,43 +182,20 @@ public class JEightPuzzleFrame extends JFrame {
     return true;
   }
 
-  private boolean checkNeighbor(int row, int col) {
-    // There is probably a more programmatic way to accomplish this, but each
-    // row has a pattern that can be used to check the neighbors of the two
-    // side positions, and the middle position does not follow it.
-    switch (row) {
-      case 0:
-        if (col != 1) {
-          return board[row + 1][col] == 0 || board[0][1] == 0;
-        } else {
-          return board[row + 1][col] == 0 || board[row][col + 1] == 0
-              || board[0][0] == 0;
-        }
-      case 1:
-        if (col != 1) {
-          return board[row + 1][col] == 0 || board[row - 1][col] == 0
-              || board[1][1] == 0;
-        } else {
-          return board[row - 1][col] == 0 || board[row + 1][col] == 0
-              || board[row][col + 1] == 0 || board[row][col - 1] == 0;
-        }
-      case 2:
-        if (col != 1) {
-          return board[row - 1][col] == 0 || board[2][1] == 0;
-        } else {
-          return board[row][col - 1] == 0 || board[row - 1][col] == 0
-              || board[row][col + 1] == 0;
-        }
-      default:
-        break;
-    }
-    return false;
+  private boolean isNeighbor(int curRow, int curCol, int zeroRow, int
+      zeroCol) {
+    // Neighbors will always be either one row up and the same column, one
+    // row down and the same column, the same row and ome column left, or the
+    // same row and one column right.
+    return zeroRow == curRow - 1 && zeroCol == curCol || zeroRow == curRow
+        + 1 && zeroCol == curCol || zeroRow == curRow && zeroCol == curCol
+        - 1 || zeroRow == curRow && zeroCol == curCol + 1;
   }
 
   private void swapZero(int buttonRow, int buttonCol, int zeroRow, int
       zeroCol) {
     // Simply switches the position of whatever button was clicked and the
-    // empty button. Only called if checkNeighbor returned true.
+    // empty button. Only called if isNeighbor returned true.
     int tempZero = board[zeroRow][zeroCol];
     board[zeroRow][zeroCol] = board[buttonRow][buttonCol];
     board[buttonRow][buttonCol] = tempZero;
@@ -297,9 +289,10 @@ public class JEightPuzzleFrame extends JFrame {
         }
       }
 
-      // Calls checkNeighbor to see if the empty button is a neighbor of the
+      // Calls isNeighbor to see if the empty button is a neighbor of the
       // clicked button.
-      if (checkNeighbor(currentRow, currentCol)) {
+      if (isNeighbor(currentRow, currentCol, currentZeroRow,
+          currentZeroCol)) {
         // If they are neighbors, then their positions are swapped with
         // swapZero.
         swapZero(currentRow, currentCol, currentZeroRow, currentZeroCol);
