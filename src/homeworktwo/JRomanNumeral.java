@@ -151,14 +151,20 @@ public class JRomanNumeral extends JFrame {
         // to delete a previously entered character.
         if (pressedKey == 'M' || pressedKey == 'D' || pressedKey == 'C'
             || pressedKey == 'L' || pressedKey == 'X' || pressedKey == 'V'
-            || pressedKey == 'I' || pressedKey == 8 || pressedKey == 127) {
+            || pressedKey == 'I' || pressedKey == 'm' || pressedKey == 'd'
+            || pressedKey == 'c' || pressedKey == 'l' || pressedKey == 'x'
+            || pressedKey == 'v' || pressedKey == 'i' || pressedKey == 8
+            || pressedKey == 127) {
           // If all numerals are deleted and the result is an empty String,
           // call the romanToArabic method to make that field also empty.
           if (romanField.getText().length() == 0) {
             lastValidRoman = "";
             arabicField.setText(romanToArabic(""));
           } else {
-            lastValidRoman = romanField.getText();
+            // Convert all input to uppercase and then update the field to
+            // display proper uppercase.
+            lastValidRoman = romanField.getText().toUpperCase();
+            romanField.setText(lastValidRoman);
             arabicField.setText(romanToArabic(lastValidRoman));
           }
         } else {
