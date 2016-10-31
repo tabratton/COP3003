@@ -1,16 +1,22 @@
 package homeworkthree;
 
-import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Graphics;
+import javax.swing.JPanel;
 
 public class JCanvas extends JPanel {
-  public void paintComponent(Graphics g) {
-    g.setColor(Color.WHITE);
-    g.fillRect(0, 0, getWidth(), getHeight());
+
+  /**
+   * Repaints the canvas used for drawing.
+   *
+   * @param graphics The graphics object used for drawing.
+   */
+  public void paintComponent(Graphics graphics) {
+    graphics.setColor(Color.WHITE);
+    graphics.fillRect(0, 0, getWidth(), getHeight());
 
     for (MyShape shape : JSimplePaint.shapes) {
-      shape.draw(g);
+      shape.draw(graphics);
     }
   }
 }

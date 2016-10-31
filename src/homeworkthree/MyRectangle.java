@@ -15,16 +15,16 @@ public class MyRectangle extends Rectangle implements MyShape {
     super();
   }
 
-  public MyRectangle(int x, int y, int width, int height) {
-    super(x, y, width, height);
+  public MyRectangle(int topLeftX, int topLeftY, int width, int height) {
+    super(topLeftX, topLeftY, width, height);
   }
 
-  public void setClickedX(int x) {
-    this.clickedX = x;
+  public void setClickedX(int clickedX) {
+    this.clickedX = clickedX;
   }
 
-  public void setClickedY(int y) {
-    this.clickedY = y;
+  public void setClickedY(int clickedY) {
+    this.clickedY = clickedY;
   }
 
   public int getClickedX() {
@@ -36,21 +36,22 @@ public class MyRectangle extends Rectangle implements MyShape {
   }
 
   @Override
-  public boolean isSelected(int x, int y) {
+  public boolean isSelected(int clickedX, int clickedY) {
     if (!this.filled) {
       MyRectangle smaller = new MyRectangle(this.x + 1, this.y + 1, this.width
           - 2, this.height - 2);
       MyRectangle larger = new MyRectangle(this.x - 1, this.y - 1, this.width
           + 2, this.height + 2);
-      return !smaller.contains(x, y) && larger.contains(x, y);
+      return !smaller.contains(clickedX, clickedY) && larger.contains(clickedX,
+          clickedY);
     } else {
-      return contains(x, y);
+      return contains(clickedX, clickedY);
     }
   }
 
   @Override
-  public void draw(Graphics g) {
-    Graphics2D g2d = (Graphics2D) g;
+  public void draw(Graphics graphics) {
+    Graphics2D g2d = (Graphics2D) graphics;
     g2d.setColor(color);
     if (filled) {
       g2d.fill(this);
@@ -70,7 +71,7 @@ public class MyRectangle extends Rectangle implements MyShape {
   }
 
   @Override
-  public void move(int x, int y) {
+  public void move(int dx, int dy) {
     this.x = this.x + x;
     this.y = this.y + y;
   }

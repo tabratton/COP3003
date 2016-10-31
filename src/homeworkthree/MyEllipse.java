@@ -15,16 +15,16 @@ public class MyEllipse extends Ellipse2D.Float implements MyShape {
     super();
   }
 
-  public MyEllipse(int x, int y, int width, int height) {
-    super(x, y, width, height);
+  public MyEllipse(int topLeftX, int topLeftY, int width, int height) {
+    super(topLeftX, topLeftY, width, height);
   }
 
-  public void setClickedX(int x) {
-    this.clickedX = x;
+  public void setClickedX(int clickedX) {
+    this.clickedX = clickedX;
   }
 
-  public void setClickedY(int y) {
-    this.clickedY = y;
+  public void setClickedY(int clickedY) {
+    this.clickedY = clickedY;
   }
 
   public int getClickedX() {
@@ -36,21 +36,21 @@ public class MyEllipse extends Ellipse2D.Float implements MyShape {
   }
 
   @Override
-  public boolean isSelected(int x, int y) {
+  public boolean isSelected(int clickedX, int clickedY) {
     if (!this.filled) {
       MyEllipse smaller = new MyEllipse((int) this.x + 1, (int) this.y + 1,
           (int) this.width - 2, (int) this.height - 2);
       MyEllipse larger = new MyEllipse((int) this.x - 1, (int) this.y - 1,
           (int) this.width + 2, (int) this.height + 2);
-      return !smaller.contains(x, y) && larger.contains(x, y);
+      return !smaller.contains(clickedX, clickedY) && larger.contains(clickedX, clickedY);
     } else {
-      return contains(x, y);
+      return contains(clickedX, clickedY);
     }
   }
 
   @Override
-  public void draw(Graphics g) {
-    Graphics2D g2d = (Graphics2D) g;
+  public void draw(Graphics graphics) {
+    Graphics2D g2d = (Graphics2D) graphics;
     g2d.setColor(color);
     if (filled) {
       g2d.fill(this);
@@ -70,8 +70,8 @@ public class MyEllipse extends Ellipse2D.Float implements MyShape {
   }
 
   @Override
-  public void move(int x, int y) {
-    this.x = this.x + x;
-    this.y = this.y + y;
+  public void move(int dx, int dy) {
+    this.x = this.x + dx;
+    this.y = this.y + dy;
   }
 }

@@ -37,6 +37,11 @@ public class JSimplePaint extends JFrame {
   private int initialRightClickX;
   private int initialLeftClickY;
 
+  /**
+   * Main method of the program, creates a JSimplePaint object and displays it.
+   *
+   * @param args No commandline arguments used in this program.
+   */
   public static void main(String[] args) {
     JSimplePaint paint = new JSimplePaint("Paint");
     paint.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,6 +49,11 @@ public class JSimplePaint extends JFrame {
     paint.setVisible(true);
   }
 
+  /**
+   * Constructor for JSimplePaint, creates the entire layout.
+   *
+   * @param windowName The name of the window.
+   */
   public JSimplePaint(String windowName) {
     super(windowName);
     setLayout(new BorderLayout());
@@ -54,7 +64,7 @@ public class JSimplePaint extends JFrame {
     JButton undoButton = new JButton("Undo");
     undoButton.addActionListener(new ActionListener() {
       @Override
-      public void actionPerformed(ActionEvent e) {
+      public void actionPerformed(ActionEvent event) {
         if (shapes.size() > 0) {
           shapes.remove(shapes.size() - 1);
           canvas.repaint();
@@ -68,7 +78,7 @@ public class JSimplePaint extends JFrame {
     JButton clearButton = new JButton("Clear");
     clearButton.addActionListener(new ActionListener() {
       @Override
-      public void actionPerformed(ActionEvent e) {
+      public void actionPerformed(ActionEvent event) {
         shapes.clear();
         canvas.repaint();
       }
@@ -77,8 +87,8 @@ public class JSimplePaint extends JFrame {
     JComboBox colorComboBox = new JComboBox(colors);
     colorComboBox.addItemListener(new ItemListener() {
       @Override
-      public void itemStateChanged(ItemEvent e) {
-        switch(colorComboBox.getSelectedIndex()) {
+      public void itemStateChanged(ItemEvent event) {
+        switch (colorComboBox.getSelectedIndex()) {
           case 0:
             nextObjectColor = Color.RED;
             break;
@@ -100,8 +110,8 @@ public class JSimplePaint extends JFrame {
     JComboBox shapesComboBox = new JComboBox(typesOfShapes);
     shapesComboBox.addItemListener(new ItemListener() {
       @Override
-      public void itemStateChanged(ItemEvent e) {
-        switch(shapesComboBox.getSelectedIndex()) {
+      public void itemStateChanged(ItemEvent event) {
+        switch (shapesComboBox.getSelectedIndex()) {
           case 0:
             nextObjectShape = "Rectangle";
             break;
@@ -120,7 +130,7 @@ public class JSimplePaint extends JFrame {
     JCheckBox filled = new JCheckBox("Filled");
     filled.addItemListener(new ItemListener() {
       @Override
-      public void itemStateChanged(ItemEvent e) {
+      public void itemStateChanged(ItemEvent event) {
         nextObjectFilled = filled.isSelected();
       }
     });
@@ -157,10 +167,10 @@ public class JSimplePaint extends JFrame {
 
   private class MouseHandler extends MouseInputAdapter {
     @Override
-    public void mouseDragged(MouseEvent e) {
-      setCoordinatesText(e);
-      int newX = e.getX();
-      int newY = e.getY();
+    public void mouseDragged(MouseEvent event) {
+      setCoordinatesText(event);
+      int newX = event.getX();
+      int newY = event.getY();
       if (drawingShape) {
         MyShape newShape = shapes.get(shapes.size() - 1);
         String subclassName = newShape.getClass().getSimpleName();
@@ -188,6 +198,8 @@ public class JSimplePaint extends JFrame {
             changingLine.setX2(newX);
             changingLine.setY2(newY);
             break;
+          default:
+            break;
         }
       } else if (movingShape) {
         int changeInX = newX - initialRightClickX;
@@ -211,39 +223,41 @@ public class JSimplePaint extends JFrame {
             initialRightClickX = newX;
             initialLeftClickY = newY;
             break;
+          default:
+            break;
         }
       }
       canvas.repaint();
     }
 
     @Override
-    public void mouseMoved(MouseEvent e) {
-      setCoordinatesText(e);
+    public void mouseMoved(MouseEvent event) {
+      setCoordinatesText(event);
     }
 
     @Override
-    public void mouseExited(MouseEvent e) {
+    public void mouseExited(MouseEvent event) {
       mouseIn = false;
       mouseOut = true;
-      setCoordinatesText(e);
+      setCoordinatesText(event);
     }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
+    public void mouseEntered(MouseEvent event) {
       mouseIn = true;
       mouseOut = false;
-      setCoordinatesText(e);
+      setCoordinatesText(event);
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-      int buttonClicked = e.getButton();
-      int mouseX = e.getX();
-      int mouseY = e.getY();
-      if (SwingUtilities.isLeftMouseButton(e)) {
+    public void mousePressed(MouseEvent event) {
+      int buttonClicked = event.getButton();
+      int mouseX = event.getX();
+      int mouseY = event.getY();
+      if (SwingUtilities.isLeftMouseButton(event)) {
         drawingShape = true;
         MyShape newShape = null;
-        switch(nextObjectShape) {
+        switch (nextObjectShape) {
           case "Rectangle":
             MyRectangle newRectangle = new MyRectangle();
             newRectangle.setClickedX(mouseX);
@@ -264,11 +278,13 @@ public class JSimplePaint extends JFrame {
             newLine.setY2(mouseY);
             newShape = newLine;
             break;
+          default:
+            break;
         }
         newShape.setColor(nextObjectColor);
         newShape.setFilled(nextObjectFilled);
         shapes.add(newShape);
-      } else if (SwingUtilities.isRightMouseButton(e)) {
+      } else if (SwingUtilities.isRightMouseButton(event)) {
         MyShape clickedShape = null;
         for (int i = shapes.size() - 1; i >= 0; i--) {
           if (shapes.get(i).isSelected(mouseX, mouseY)) {
@@ -287,7 +303,7 @@ public class JSimplePaint extends JFrame {
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(MouseEvent event) {
       movingShape = false;
       drawingShape = false;
     }

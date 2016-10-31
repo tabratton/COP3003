@@ -9,14 +9,14 @@ public class MyLine extends Line2D.Float implements MyShape {
   private boolean filled;
 
   @Override
-  public boolean isSelected(int x, int y) {
-    return intersects(x, y, 1, 1);
+  public boolean isSelected(int clickedX, int clickedY) {
+    return intersects(clickedX, clickedY, 1, 1);
   }
 
   @Override
-  public void draw(Graphics g) {
-    g.setColor(color);
-    g.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
+  public void draw(Graphics graphics) {
+    graphics.setColor(color);
+    graphics.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
   }
 
   @Override
@@ -30,26 +30,26 @@ public class MyLine extends Line2D.Float implements MyShape {
   }
 
   @Override
-  public void move(int x, int y) {
-    this.x1 = this.x1 + x;
-    this.x2 = this.x2 + x;
-    this.y1 = this.y1 + y;
-    this.y2 = this.y2 + y;
+  public void move(int dx, int dy) {
+    this.x1 = this.x1 + dx;
+    this.x2 = this.x2 + dx;
+    this.y1 = this.y1 + dy;
+    this.y2 = this.y2 + dy;
   }
 
-  public void setX1(int x) {
-    this.x1 = x;
+  public void setX1(int x1) {
+    this.x1 = x1;
   }
 
-  public void setX2(int x) {
-    this.x2 = x;
+  public void setX2(int x2) {
+    this.x2 = x2;
   }
 
-  public void setY1(int y) {
-    this.y1 = y;
+  public void setY1(int y1) {
+    this.y1 = y1;
   }
 
-  public void setY2(int y) {
-    this.y2 = y;
+  public void setY2(int y2) {
+    this.y2 = y2;
   }
 }
