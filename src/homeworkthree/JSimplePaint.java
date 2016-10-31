@@ -169,10 +169,13 @@ public class JSimplePaint extends JFrame {
 
     add(canvas, BorderLayout.CENTER);
 
+    JPanel south = new JPanel();
+    south.setLayout(new FlowLayout(FlowLayout.LEFT));
+
     // Create mouse coordinates label to display where the mouse currently is.
     mouseCoordinates = new JLabel("N/A");
-    mouseCoordinates.setHorizontalTextPosition(SwingConstants.LEFT);
-    add(mouseCoordinates, BorderLayout.SOUTH);
+    south.add(mouseCoordinates);
+    add(south, BorderLayout.SOUTH);
 
   }
 
