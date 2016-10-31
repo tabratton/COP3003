@@ -6,8 +6,11 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 public class MyRectangle extends Rectangle implements MyShape {
+  // The color of the shape.
   private Color color;
+  // The filled status of the shape.
   private boolean filled;
+  // Stores the initial click coordinates to use later when drawing the object.
   private int clickedX;
   private int clickedY;
 
@@ -37,6 +40,9 @@ public class MyRectangle extends Rectangle implements MyShape {
 
   @Override
   public boolean isSelected(int clickedX, int clickedY) {
+    // If it isn't filled, use inclusion/exclusion with a slightly smaller
+    // rectangle and a slightly larger rectangle to determine if the border of
+    // the real rectangle was clicked.
     if (!this.filled) {
       MyRectangle smaller = new MyRectangle(this.x + 1, this.y + 1, this.width
           - 2, this.height - 2);
@@ -72,6 +78,8 @@ public class MyRectangle extends Rectangle implements MyShape {
 
   @Override
   public void move(int dx, int dy) {
+    // If the change was to the left or up, dx or dy will already be
+    // negative, so only addition is needed.
     this.x = this.x + x;
     this.y = this.y + y;
   }

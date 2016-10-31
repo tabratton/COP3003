@@ -15,6 +15,8 @@ public class JCanvas extends JPanel {
     graphics.setColor(Color.WHITE);
     graphics.fillRect(0, 0, getWidth(), getHeight());
 
+    // Loops through all the drawn shapes, redrawing them to reflect any
+    // changes made.
     for (MyShape shape : JSimplePaint.shapes) {
       shape.draw(graphics);
     }

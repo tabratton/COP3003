@@ -5,11 +5,16 @@ import java.awt.Graphics;
 import java.awt.geom.Line2D;
 
 public class MyLine extends Line2D.Float implements MyShape {
+  // The color of the line.
   private Color color;
+  // Not needed for lines, but included it anyway for completeness since
+  // MyShape has a setFilled method.
   private boolean filled;
 
   @Override
   public boolean isSelected(int clickedX, int clickedY) {
+    // The line was clicked if the line intersects a tiny rectangle around
+    // the point that was clicked.
     return intersects(clickedX, clickedY, 1, 1);
   }
 
