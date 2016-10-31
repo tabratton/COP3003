@@ -80,7 +80,7 @@ public class MyRectangle extends Rectangle implements MyShape {
   public void move(int dx, int dy) {
     // If the change was to the left or up, dx or dy will already be
     // negative, so only addition is needed.
-    this.x = this.x + x;
-    this.y = this.y + y;
+    this.x = this.x + dx;
+    this.y = this.y + dy;
   }
 }

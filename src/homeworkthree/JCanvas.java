@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 public class JCanvas extends JPanel {
-
   /**
    * Repaints the canvas used for drawing.
    *
@@ -14,7 +13,6 @@ public class JCanvas extends JPanel {
   public void paintComponent(Graphics graphics) {
     graphics.setColor(Color.WHITE);
     graphics.fillRect(0, 0, getWidth(), getHeight());
-
     // Loops through all the drawn shapes, redrawing them to reflect any
     // changes made.
     for (MyShape shape : JSimplePaint.shapes) {
