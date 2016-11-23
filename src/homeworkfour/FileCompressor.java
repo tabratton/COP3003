@@ -25,16 +25,20 @@ class FileCompressor {
   public static void compress(String src, String dest,
                               Map<String, Character> dictionary) {
     setUpScanner(src);
-    String fileString = input.next();
+    String fileString = input.next().toLowerCase();
 
+    // [ ] in regex to prevent matching of sub strings
+    // inside of words, such as the "the" in "another" (Not a perfect
+    // solution since the sub word could be at the end of the word, or it may
+    // be followed by punctuation instead of a space).
     for (String word : dictionary.keySet()) {
       // Have to escape $ and * due to their use in regex.
       if (dictionary.get(word).equals('$')) {
-        fileString = fileString.replaceAll("(?i)" + word, "\\"
-            + dictionary.get(word).toString());
+        fileString = fileString.replaceAll(word + "[ ]",
+            String.format("\\%c ", dictionary.get(word)));
       } else {
-        fileString = fileString.replaceAll("(?i)" + word,
-            dictionary.get(word).toString());
+        fileString = fileString.replaceAll(word + "[ ]",
+            String.format("%c ", dictionary.get(word)));
       }
     }
 
@@ -53,16 +57,20 @@ class FileCompressor {
   public static void decompress(String src, String dest,
                                 Map<Character, String> dictionary) {
     setUpScanner(src);
-    String fileString = input.next();
+    String fileString = input.next().toLowerCase();
 
+    // [ ] in regex to prevent matching of sub strings
+    // inside of words, such as the "the" in "another" (Not a perfect
+    // solution since the sub word could be at the end of the word, or it may
+    // be followed by punctuation instead of a space).
     for (Character character : dictionary.keySet()) {
       // Have to escape $ and * due to their use in regex.
       if (character.equals('$') || character.equals('*')) {
-        fileString = fileString.replaceAll("(?i)\\" + character,
-            dictionary.get(character));
+        fileString = fileString.replaceAll("\\" + character + "[ ]",
+            String.format("%s ", dictionary.get(character)));
       } else {
-        fileString = fileString.replaceAll("(?i)" + character,
-            dictionary.get(character));
+        fileString = fileString.replaceAll(character + "[ ]",
+            String.format("%s ", dictionary.get(character)));
       }
     }
 
